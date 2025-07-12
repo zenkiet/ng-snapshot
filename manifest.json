@@ -1,0 +1,105 @@
+{
+  "manifest_version": 3,
+  "name": "Angular Form Snapshot",
+  "version": "1.0.0",
+  "description": "Professional Angular developer tool for inspecting, saving, and restoring FormControl states with advanced encoding/decoding capabilities",
+  "author": "Angular DevTools Team",
+
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "clipboardWrite",
+    "clipboardRead"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "src/shared/utils.js",
+        "src/shared/angular-detector.js",
+        "src/content/form-inspector.js",
+        "src/content/content-script.js"
+      ],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    }
+  ],
+
+  "devtools_page": "src/devtools/devtools.html",
+
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "Angular Form Snapshot",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/shared/angular-bridge.js",
+        "src/shared/form-serializer.js",
+        "assets/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "minimum_chrome_version": "96",
+
+  "options_ui": {
+    "page": "src/popup/options.html",
+    "open_in_tab": false
+  },
+
+  "commands": {
+    "capture-forms": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Capture all FormControl values"
+    },
+    "restore-forms": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+R",
+        "mac": "Command+Shift+R"
+      },
+      "description": "Restore FormControl values from snapshot"
+    },
+    "toggle-devtools": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+A",
+        "mac": "Command+Shift+A"
+      },
+      "description": "Toggle Angular Form DevTools panel"
+    }
+  },
+
+  "externally_connectable": {
+    "matches": ["<all_urls>"]
+  }
+}

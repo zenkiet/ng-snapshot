@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Form Snapshot</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <img src="../../assets/icon32.png" alt="Angular Form Snapshot" class="logo-icon">
+        <h1 class="title">Angular Form Snapshot</h1>
+      </div>
+      <div class="status-indicator" id="angularStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">Detecting...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Angular Detection Status -->
+    <section class="detection-section" id="detectionSection">
+      <div class="detection-card">
+        <div class="detection-icon">
+          <span class="material-icons" id="detectionIcon">search</span>
+        </div>
+        <div class="detection-info">
+          <h3 class="detection-title" id="detectionTitle">Detecting Angular</h3>
+          <p class="detection-description" id="detectionDescription">
+            Scanning the page for Angular applications...
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Angular Detected Content -->
+    <section class="angular-content" id="angularContent" style="display: none;">
+      <!-- Angular Info -->
+      <div class="angular-info-card">
+        <div class="angular-version">
+          <span class="material-icons">info</span>
+          <span id="angularVersionText">Angular detected</span>
+        </div>
+        <div class="form-stats">
+          <div class="stat-item">
+            <span class="stat-number" id="formCount">0</span>
+            <span class="stat-label">Forms</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="controlCount">0</span>
+            <span class="stat-label">Controls</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button class="action-button primary" id="captureBtn">
+          <span class="material-icons">camera_alt</span>
+          <span class="button-text">Capture Forms</span>
+          <span class="keyboard-shortcut">Ctrl+Shift+F</span>
+        </button>
+
+        <button class="action-button secondary" id="restoreBtn">
+          <span class="material-icons">restore</span>
+          <span class="button-text">Restore Forms</span>
+          <span class="keyboard-shortcut">Ctrl+Shift+R</span>
+        </button>
+      </div>
+
+      <!-- Snapshot Management -->
+      <div class="snapshot-section">
+        <div class="section-header">
+          <h3 class="section-title">Recent Snapshots</h3>
+          <button class="icon-button" id="refreshSnapshotsBtn" title="Refresh snapshots">
+            <span class="material-icons">refresh</span>
+          </button>
+        </div>
+
+        <div class="snapshot-list" id="snapshotList">
+          <!-- Snapshots will be populated here -->
+          <div class="empty-state" id="emptyState">
+            <span class="material-icons">photo_library</span>
+            <p>No snapshots yet</p>
+            <span class="empty-description">Capture forms to see snapshots here</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Options -->
+      <div class="advanced-section">
+        <button class="collapsible-header" id="advancedToggle">
+          <span class="material-icons">tune</span>
+          <span>Advanced Options</span>
+          <span class="material-icons expand-icon">expand_more</span>
+        </button>
+
+        <div class="collapsible-content" id="advancedContent">
+          <div class="option-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="autoSaveOption" checked>
+              <span class="checkmark"></span>
+              <span class="label-text">Auto-save snapshots</span>
+            </label>
+
+            <label class="checkbox-label">
+              <input type="checkbox" id="copyToClipboardOption" checked>
+              <span class="checkmark"></span>
+              <span class="label-text">Copy to clipboard</span>
+            </label>
+
+            <label class="checkbox-label">
+              <input type="checkbox" id="includeValidationOption">
+              <span class="checkmark"></span>
+              <span class="label-text">Include validation state</span>
+            </label>
+          </div>
+
+          <div class="option-group">
+            <label class="select-label">
+              <span class="label-text">Compression Level</span>
+              <select id="compressionLevel" class="select-input">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- No Angular Content -->
+    <section class="no-angular-content" id="noAngularContent" style="display: none;">
+      <div class="no-angular-card">
+        <div class="no-angular-icon">
+          <span class="material-icons">warning</span>
+        </div>
+        <div class="no-angular-info">
+          <h3>No Angular Application Detected</h3>
+          <p>This extension works with Angular applications. Please navigate to a page with an Angular app.</p>
+          <button class="retry-button" id="retryDetectionBtn">
+            <span class="material-icons">refresh</span>
+            Try Again
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-actions">
+      <button class="footer-button" id="settingsBtn" title="Settings">
+        <span class="material-icons">settings</span>
+      </button>
+
+      <button class="footer-button" id="helpBtn" title="Help">
+        <span class="material-icons">help</span>
+      </button>
+
+      <button class="footer-button" id="devtoolsBtn" title="Open DevTools">
+        <span class="material-icons">developer_mode</span>
+      </button>
+    </div>
+
+    <div class="footer-info">
+      <span class="version">v1.0.0</span>
+    </div>
+  </footer>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p class="loading-text" id="loadingText">Processing...</p>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="notification-toast" id="notificationToast" style="display: none;">
+    <div class="toast-content">
+      <span class="material-icons toast-icon" id="toastIcon">info</span>
+      <span class="toast-message" id="toastMessage"></span>
+      <button class="toast-close" id="toastClose">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <!-- Snapshot Details Modal -->
+  <div class="modal-overlay" id="snapshotModalOverlay" style="display: none;">
+    <div class="modal" id="snapshotModal">
+      <div class="modal-header">
+        <h3 class="modal-title">Snapshot Details</h3>
+        <button class="modal-close" id="snapshotModalClose">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <div class="modal-content">
+        <div class="snapshot-details" id="snapshotDetails">
+          <!-- Snapshot details will be populated here -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-button secondary" id="snapshotModalCancel">Cancel</button>
+        <button class="modal-button primary" id="snapshotModalRestore">Restore</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModalOverlay" style="display: none;">
+    <div class="modal" id="settingsModal">
+      <div class="modal-header">
+        <h3 class="modal-title">Settings</h3>
+        <button class="modal-close" id="settingsModalClose">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <div class="modal-content">
+        <div class="settings-content" id="settingsContent">
+          <!-- Settings content will be populated here -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-button secondary" id="settingsModalCancel">Cancel</button>
+        <button class="modal-button primary" id="settingsModalSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div class="modal-overlay" id="helpModalOverlay" style="display: none;">
+    <div class="modal" id="helpModal">
+      <div class="modal-header">
+        <h3 class="modal-title">Help & Documentation</h3>
+        <button class="modal-close" id="helpModalClose">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <div class="modal-content">
+        <div class="help-content">
+          <div class="help-section">
+            <h4>Keyboard Shortcuts</h4>
+            <div class="shortcut-list">
+              <div class="shortcut-item">
+                <kbd>Ctrl+Shift+F</kbd>
+                <span>Capture forms</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Ctrl+Shift+R</kbd>
+                <span>Restore forms</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Ctrl+Shift+A</kbd>
+                <span>Toggle DevTools</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="help-section">
+            <h4>How to Use</h4>
+            <ol class="help-steps">
+              <li>Navigate to an Angular application</li>
+              <li>Fill out form fields with test data</li>
+              <li>Click "Capture Forms" to save the current state</li>
+              <li>The snapshot will be encoded and copied to clipboard</li>
+              <li>Use "Restore Forms" to restore a previously saved state</li>
+            </ol>
+          </div>
+
+          <div class="help-section">
+            <h4>Supported Form Types</h4>
+            <ul class="help-list">
+              <li>Reactive Forms (FormControl, FormGroup, FormArray)</li>
+              <li>Template-driven Forms (NgModel)</li>
+              <li>Angular Material Components</li>
+              <li>Native HTML Form Elements</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="popup.js"></script>
+</body>
+</html>
